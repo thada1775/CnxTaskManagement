@@ -1,0 +1,50 @@
+﻿@model CnxTaskManagement.Application.DTOs.Task.WorkTaskDto
+
+<div class="col-md-12">
+    <!-- general form elements -->
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title font-weight-bold">แก้ไขข้อมูลโครงการ</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form asp-action="Edit" id="CreateForm">
+            <div class="card-body">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ProjectId" />
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DueDateTime" class="control-label"></label>
+                    <input asp-for="DueDateTime" class="form-control" />
+                    <span asp-validation-for="DueDateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CompleteDateTime" class="control-label"></label>
+                    <input asp-for="CompleteDateTime" class="form-control" />
+                    <span asp-validation-for="CompleteDateTime" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <input type="submit" value="บันทึก" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <br />
+    <div>
+        <a asp-action="Index" asp-route-id="@Model.ProjectId" class="btn btn-info btn-sm"><i class="fas fa-backward"></i></a>
+    </div>
+</div>
+
+
+

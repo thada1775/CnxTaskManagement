@@ -1,0 +1,45 @@
+﻿@using CnxTaskManagement.Application.Common.Interfaces
+@model IPagedResult
+@{
+    string paginationUrl = ViewData["PaginationUrl"] as string ?? Context.Request.Path;
+}
+
+<nav aria-label="Page navigation">
+    <div class="d-flex align-items-center">
+        <ul class="pagination mb-0">
+            <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                <a class="page-link" href="@($"{paginationUrl}?keyword={Model.Keyword}&pageNumber={Model.PageNumber - 1}&pageSize={Model.PageSize}")">Previous</a>
+            </li>
+
+            @{
+                int startPage = Math.Max(1, Model.PageNumber - 2);
+                int endPage = Math.Min(Model.TotalPages, startPage + 4);
+                if (endPage - startPage < 4)
+                {
+                    startPage = Math.Max(1, endPage - 4);
+                }
+            }
+
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" href="@($"{paginationUrl}?keyword={Model.Keyword}&pageNumber={i}&pageSize={Model.PageSize}")">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" href="@($"{paginationUrl}?keyword={Model.Keyword}&pageNumber={Model.PageNumber + 1}&pageSize={Model.PageSize}")">Next</a>
+            </li>
+        </ul>
+
+        <div class="form-group ml-3 ms-3 mb-0">
+            <input type="hidden" id="currentPageSize" value="@Model.PageSize" />
+            <select class="form-control form-control-sm" id="pageSize">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+            </select>
+        </div>
+    </div>
+</nav>
