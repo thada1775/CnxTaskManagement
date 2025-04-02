@@ -1,0 +1,32 @@
+services:
+  app:
+    build: .
+    container_name: task-manager-app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_URLS=http://+:5000
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=CnxTaskManagementDB;Username=postgres;Password=123456
+    networks:
+      - app-network
+  db:
+    image: bitnami/postgresql:17
+    restart: always
+    environment:
+      POSTGRESQL_USER: postgres
+      POSTGRESQL_PASSWORD: 123456
+      POSTGRESQL_DATABASE: CnxTaskManagementDB
+    ports:
+      - "127.0.0.1:5439:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+  
+volumes:
+  db_data:
+
+networks:
+  app-network:

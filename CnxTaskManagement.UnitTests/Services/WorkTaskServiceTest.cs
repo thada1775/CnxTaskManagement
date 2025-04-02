@@ -48,7 +48,10 @@ namespace CnxTaskManagement.UnitTests.Services
         {
             var taskDto = new WorkTaskDto { Name = "New Task2", ProjectId = 1};
             _mockMapper.Setup(m => m.Map<WorkTask>(It.IsAny<WorkTaskDto>())).Returns((WorkTaskDto src) => new WorkTask { Name = src.Name, ProjectId = src.ProjectId });
+
+            //Act
             var result = await _service.CreateTaskAsync(taskDto);
+            //Assert
             result.Should().NotBeNull();
             _context.WorkTasks.Should().HaveCount(2);
         }
@@ -97,7 +100,9 @@ namespace CnxTaskManagement.UnitTests.Services
         [Fact]
         public async Task DeleteTaskAsync()
         {
+            //Act
             var result = await _service.DeleteTaskAsync(new List<long> { 1 });
+            //Assert
             result.Should().BeTrue();
             _context.WorkTasks.Should().HaveCount(0);
         }

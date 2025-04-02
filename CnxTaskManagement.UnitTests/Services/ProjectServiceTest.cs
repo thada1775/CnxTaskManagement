@@ -52,6 +52,7 @@ namespace CnxTaskManagement.UnitTests.Services
         {
             _mockApiService.Setup(x => x.SendRequestAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpMethod>(), It.IsAny<object>(), It.IsAny<Dictionary<string, string>>()))
                 .ReturnsAsync("{\"censored_content\": \"New Project2\"}");
+
             var projectDto = new ProjectDto { Name = "New Project2"};
             _mockMapper.Setup(m => m.Map<Project>(It.IsAny<ProjectDto>())).Returns((ProjectDto src) => new Project { Name = src.Name });
             var result = await _service.CreateProjectAsync(projectDto);
@@ -92,6 +93,7 @@ namespace CnxTaskManagement.UnitTests.Services
         [Fact]
         public async Task UpdateTaskAsync()
         {
+            //mock Api response
             _mockApiService.Setup(x => x.SendRequestAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<HttpMethod>(), It.IsAny<object>(), It.IsAny<Dictionary<string, string>>()))
                 .ReturnsAsync("{\"censored_content\": \"Updated Name\"}");
             //Arrange

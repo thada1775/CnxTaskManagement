@@ -3,12 +3,12 @@ using CnxTaskManagement.Application.Common.Interfaces;
 using CnxTaskManagement.Application.Common.Utils;
 using CnxTaskManagement.Application.Interfaces;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CnxTaskManagement.Application.Services
@@ -31,11 +31,11 @@ namespace CnxTaskManagement.Application.Services
                 throw new Exception("Badword Api key is invalid");
 
             var response = await _apiService.SendRequestAsync(apiUrl, apiKey, HttpMethod.Post,keyword);
-            var result = JsonConvert.DeserializeObject<BadWord>(response);
+            var result = JsonSerializer.Deserialize<BadWord>(response);
             if (result == null)
                 throw new Exception("Can't find badword");
 
-            return result.censored_content;
+            return result.censored_content.Replace("\"","");
         }
     }
 }

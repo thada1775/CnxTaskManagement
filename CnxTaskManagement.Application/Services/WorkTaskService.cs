@@ -52,11 +52,13 @@ namespace CnxTaskManagement.Application.Services
             result.data = _mapper.Map<List<WorkTaskDto>>(await query.ToListAsync());
             result.TotalRecords = totalRecord;
             result.TotalPages = totalRecord != 0 && filterDto.PageSize.HasValue ? (int)Math.Ceiling((double)totalRecord / filterDto.PageSize.Value) : 0;
+            DateTimeConvertUtil.ConvertDateTimesToLocal(result.data);
             return result;
         }
 
         public async Task<WorkTaskDto> CreateTaskAsync(WorkTaskDto taskDto)
         {
+            DateTimeConvertUtil.ConvertDateTimesToUtc(taskDto);
             await ValidateCreate(taskDto);
 
             var currentDateTime = DateTime.UtcNow;
@@ -69,11 +71,13 @@ namespace CnxTaskManagement.Application.Services
             await _context.WorkTasks.AddAsync(entity);
             await _context.SaveChangesAsync();
             var result = _mapper.Map<WorkTaskDto>(entity);
+            DateTimeConvertUtil.ConvertDateTimesToLocal(result);
             return result;
         }
 
         public async Task<WorkTaskDto> UpdateTaskAsync(WorkTaskDto taskDto)
         {
+            DateTimeConvertUtil.ConvertDateTimesToUtc(taskDto);
             var entity = await ValidateUpdate(taskDto);
             var currentDateTime = DateTime.UtcNow;
 
@@ -88,6 +92,7 @@ namespace CnxTaskManagement.Application.Services
             await _context.SaveChangesAsync();
 
             var result = _mapper.Map<WorkTaskDto>(entity);
+            DateTimeConvertUtil.ConvertDateTimesToLocal(result);
             return result;
         }
 
@@ -95,6 +100,7 @@ namespace CnxTaskManagement.Application.Services
         {
             var task = await _context.WorkTasks.Include(x => x.Project).FirstOrDefaultAsync(x => x.Id == id);
             var taskDto = _mapper.Map<WorkTaskDto>(task);
+            DateTimeConvertUtil.ConvertDateTimesToLocal(taskDto);
             return taskDto;
         }
 
